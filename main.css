@@ -161,3 +161,22 @@ p {
 }
 
 /* end buttons */
+
+/* bio */
+
+.bio-content{
+
+  max-width: 75vw;
+  margin: 0 auto;
+  margin-bottom: 1vw;
+  margin-top: 1vw;
+  padding: 2rem;
+
+}
+
+.bio-content > img{
+    height: auto;
+    width: auto;
+    max-width: 600px;
+    max-height: 600px;
+}
