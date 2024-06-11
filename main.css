@@ -70,6 +70,7 @@ ul{
   align-items: center;
   max-width: 75vw;
   margin: 0 auto;
+  margin-top: 1vw;
   margin-bottom: 1vw;
   padding: 2rem;
   background-color: #fff;
@@ -299,6 +300,7 @@ p {
 }
 
 .gitbtn{
+  margin-top: 0.2vw;
   text-align: right;
 }
 
