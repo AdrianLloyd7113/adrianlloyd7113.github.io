@@ -6,7 +6,7 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: rgba(166, 250, 176, 0.8);
+  background-color: rgba(130, 130, 130, 0.36);
   margin: 0;
   padding: 0;
 }
@@ -62,7 +62,49 @@ ul{
 
 /* intro stuff ends */
 
-/* project */
+/* homepage containers */
+
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 75vw;
+  margin: 0 auto;
+  margin-bottom: 1vw;
+  padding: 2rem;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.home-image {
+  width: 50%;
+  height: 100%;
+}
+
+.home-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-text {
+  width: 50%;
+  padding: 0 20px;
+}
+
+.home-text h2, .home-text h3, .home-text p {
+  text-align: left;
+}
+
+.home-container:nth-child(even) .home-text h2,
+.home-container:nth-child(even) .home-text h3,
+.home-container:nth-child(even) .home-text p {
+  text-align: right;
+}
+
+/* homepage ends */
+
+/* projects */
 
 .project-container {
   display: flex;
@@ -70,6 +112,7 @@ ul{
   align-items: center;
   max-width: 75vw;
   margin: 0 auto;
+  margin-top: 1vw;
   margin-bottom: 1vw;
   padding: 2rem;
   background-color: #fff;
@@ -92,16 +135,29 @@ ul{
   padding: 0 20px;
 }
 
-.project-text h2, .project-text p {
+.project-text h2, .project-text h3, .project-text p {
   text-align: left;
 }
 
-.project-container:nth-child(even) .project-text h2,
-.project-container:nth-child(even) .project-text p {
+.project-container:nth-child(odd) .project-text h2,
+.project-container:nth-child(odd) .project-text h3,
+.project-container:nth-child(odd) .project-text p {
   text-align: right;
 }
 
-/* project ends */
+.more-section{
+  max-width: 75vw;
+  margin: 0 auto;
+  margin-bottom: 1vw;
+  margin-top: 1vw;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+/* project page ends */
+
 
 h1 {
   font-size: 3rem;
@@ -114,7 +170,7 @@ h1 > a{
 }
 
 h1 > a:hover{
-  color: rgba(166, 250, 176, 0.8);
+  color: rgba(118, 170, 255, 0.77);
   transition: all 0.3s ease-in-out;
   text-shadow: 1px 1px 10px rgba(20, 20, 20, 1);
 }
@@ -143,9 +199,9 @@ p {
 }
 
 #navbar a:hover{
-  color: rgba(166, 250, 176, 0.8);
+  color: rgba(118, 170, 255, 0.77);
   transition: all 0.3s ease-in-out;
-  background-color: #6a6a6a;
+  background-color: #000;
 }
 
 
@@ -179,7 +235,7 @@ p {
 }
 
 .square-button:hover {
-  background-color: rgba(89, 205, 128, 1);
+  background-color: rgba(0, 63, 164, 1);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -206,7 +262,7 @@ p {
 }
 
 .wide-button:hover {
-  background-color: rgba(89, 205, 128, 1);
+  background-color: rgba(0, 63, 164, 1);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -244,6 +300,13 @@ p {
 
 .gitbtn{
   text-align: right;
+}
+
+#signature{
+  height: auto;
+  width: auto;
+  max-width: 300px;
+  max-height: 300px;
 }
 
 /* bio ends */
