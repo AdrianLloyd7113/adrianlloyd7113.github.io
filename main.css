@@ -1,7 +1,23 @@
 /* body centre color: #f9f9f9; */
 
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins/Poppins-SemiBold.ttf') format('woff2'),
+  url('fonts/Poppins/Poppins-SemiBold.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PoppinsLight';
+  src: url('fonts/Poppins/Poppins-Light.ttf') format('woff2'),
+  url('fonts/Poppins/Poppins-Light.ttf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
-  font-family: Georgia, serif;
+  font-family: "PoppinsLight", serif;
 }
 
 body {
@@ -11,6 +27,7 @@ body {
   padding: 0;
 }
 header {
+  font-family: "Poppins", sans-serif;
   background-color: #333;
   color: #fff;
   text-align: center;
@@ -49,7 +66,7 @@ ul{
   margin: 0 auto;
   margin-bottom: 1vw;
   margin-top: 1vw;
-  margin-left: 0 auto;
+  margin-left: auto;
   margin-right: auto;
   padding: 0.1rem;
   padding-left: 10vw;
@@ -301,6 +318,7 @@ p {
 
 .gitbtn{
   margin-top: 0.2vw;
+  margin-bottom: 0.2vw;
   text-align: right;
 }
 
