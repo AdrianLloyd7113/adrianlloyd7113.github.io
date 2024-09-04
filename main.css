@@ -140,9 +140,9 @@ ul{
   text-align: left;
 }
 
-.project-container:nth-child(odd) .project-text h2,
-.project-container:nth-child(odd) .project-text h3,
-.project-container:nth-child(odd) .project-text p {
+.project-container:nth-child(even) .project-text h2,
+.project-container:nth-child(even) .project-text h3,
+.project-container:nth-child(even) .project-text p {
   text-align: right;
 }
 
@@ -341,13 +341,32 @@ p {
   background-color: #f9f9f9;
 }
 
-.post{
-  max-width: 75%;
-  text-align: center;
-  margin: auto;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #cccccc
+.post-button {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+}
+
+.post-button:hover {
+  background-color: #f0f0f0;
+}
+
+.post-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+}
+.post-date {
+    color: #777;
+    font-size: 0.9rem;
 }
 
 /* blog page ends */
