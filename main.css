@@ -35,7 +35,7 @@ body{
   background-color: #000;
   margin: 0;
   padding: 0;
-  @media (max-width: 768px) {
+  @media (max-width: 1081px) {
     text-align: center;
   }
 }
@@ -136,7 +136,7 @@ ul{
 
 .home-text h2, .home-text h3, .home-text p {
   text-align: left;
-  @media (max-width: 768px) {
+  @media (max-width: 1081px) {
     text-align: center;
   }
 }
@@ -145,7 +145,7 @@ ul{
 .home-container:nth-child(even) .home-text h3,
 .home-container:nth-child(even) .home-text p {
   text-align: right;
-  @media (max-width: 768px) {
+  @media (max-width: 1081px) {
     text-align: center;
   }
 }
@@ -195,7 +195,7 @@ ul{
 
 .project-text h2, .project-text h3, .project-text p {
   text-align: left;
-  @media (max-width: 768px) {
+  @media (max-width: 1081px) {
     text-align: center;
   }
 }
@@ -204,12 +204,12 @@ ul{
 .project-container:nth-child(even) .project-text h3,
 .project-container:nth-child(even) .project-text p {
   text-align: right;
-  @media (max-width: 768px) {
+  @media (max-width: 1081px) {
     text-align: center;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1081px) {
   .project-container {
     flex-direction: column;
   }
@@ -286,7 +286,7 @@ ul{
   p {
     font-size: 1.1rem;
     line-height: 1.6;
-    @media (max-width: 768px) {
+    @media (max-width: 1081px) {
       text-align: center;
     }
   }
@@ -340,7 +340,7 @@ ul{
     line-height: 40px;
     margin-top: 0.2vw;
     margin-bottom: 0.2vw;
-    @media (max-width: 768px) {
+    @media (max-width: 1081px) {
       text-align: center;
     }
   }
@@ -438,7 +438,7 @@ ul{
     margin-top: 0.2vw;
     margin-bottom: 0.2vw;
     text-align: right;
-    @media (max-width: 768px) {
+    @media (max-width: 1081px) {
       text-align: center;
     }
   }
@@ -486,7 +486,7 @@ ul{
     border: none;
     border-radius: 5px;
     text-align: left;
-    @media (max-width: 768px) {
+    @media (max-width: 1081px) {
       text-align: center;
     }
     cursor: pointer;
@@ -509,7 +509,7 @@ ul{
     font-size: 0.9rem;
   }
 
-@media (max-width: 768px) {
+@media (max-width: 1081px) {
   h2, h3{
       text-align: center;
   }
