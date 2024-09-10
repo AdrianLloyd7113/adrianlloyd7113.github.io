@@ -237,7 +237,7 @@ ul{
   }
 
   #navbar {
-    z-index: 99999;
+    z-index: 9999;
     overflow: hidden;
     background-color: #333;
     text-align: center;
