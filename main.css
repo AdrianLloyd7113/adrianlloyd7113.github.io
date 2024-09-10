@@ -105,7 +105,7 @@ ul{
 
 /* homepage containers */
 
-.home-container {
+.body-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -118,32 +118,32 @@ ul{
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.home-image {
+.body-image {
   width: 50%;
   height: 100%;
 }
 
-.home-image img {
+.body-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.home-text {
+.body-text {
   width: 50%;
   padding: 0 20px;
 }
 
-.home-text h2, .home-text h3, .home-text p {
+.body-text h2, .body-text h3, .body-text p {
   text-align: left;
   @media (max-width: 1081px) {
     text-align: center;
   }
 }
 
-.home-container:nth-child(even) .home-text h2,
-.home-container:nth-child(even) .home-text h3,
-.home-container:nth-child(even) .home-text p {
+.body-container:nth-child(even) .body-text h2,
+.body-container:nth-child(even) .body-text h3,
+.body-container:nth-child(even) .body-text p {
   text-align: right;
   @media (max-width: 1081px) {
     text-align: center;
@@ -154,85 +154,30 @@ ul{
 
 /* projects */
 
-.project-container-parent{
-  max-width: 75vw;
-  margin: 0 auto;
-  margin-top: 1vw;
-  margin-bottom: 1vw;
-  padding: 2rem;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.project-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 75vw;
-  margin: 0 auto;
-  margin-top: 1vw;
-  margin-bottom: 1vw;
-  padding: 2rem;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.project-image {
-  width: 50%;
-  height: 100%;
-}
-
-.project-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.project-text {
-  width: 50%;
-  padding: 0 20px;
-}
-
-.project-text h2, .project-text h3, .project-text p {
-  text-align: left;
-  @media (max-width: 1081px) {
-    text-align: center;
-  }
-}
-
-.project-container:nth-child(even) .project-text h2,
-.project-container:nth-child(even) .project-text h3,
-.project-container:nth-child(even) .project-text p {
-  text-align: right;
-  @media (max-width: 1081px) {
-    text-align: center;
-  }
-}
-
 @media (max-width: 1081px) {
-  .project-container {
+  .body-container {
     flex-direction: column;
   }
 
-  .project-image {
+  .body-image {
     width: 100%;
     height: auto;
   }
 
-  .project-text {
+  .body-text {
     width: 100%;
   }
 
-  .home-container {
+  .body-container {
     flex-direction: column;
   }
 
-  .home-image {
+  .body-image {
     width: 100%;
     height: auto;
   }
 
-  .home-text {
+  .body-text {
     width: 100%;
   }
 
@@ -434,7 +379,7 @@ ul{
     text-indent: 4em;
   }
 
-  .gitbtn {
+  .container-btn {
     margin-top: 0.2vw;
     margin-bottom: 0.2vw;
     text-align: right;
