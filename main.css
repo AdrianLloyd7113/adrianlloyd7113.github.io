@@ -154,7 +154,60 @@ ul{
 
 /* projects */
 
+#da-logo {
+  max-height: 150px;
+  max-width: 150px;
+  width: auto;
+  height: auto;
+  position: relative;
+  top: 32px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.current-role{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  justify-content: center;
+  max-width: 75vw;
+  margin: 0 auto;
+  margin-top: 1vw;
+  margin-bottom: 1vw;
+  padding: 2rem;
+  background-color: darkgray;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#role-text{
+  max-width: 70%;
+}
+
+#da-box{
+  width: 30%;
+  align-items: center;
+  vertical-align: middle;
+}
+
+#da-box > img{
+
+}
+
 @media (max-width: 1081px) {
+  .current-role {
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+  }
+
+  #da-box{
+    align-items: center;
+    align-content: center;
+    margin-bottom: 2vh;
+  }
+
   .body-container {
     flex-direction: column;
   }
