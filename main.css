@@ -21,6 +21,12 @@
 }
 
 .content, .bio-content, .contact-content, .post-list{
+  animation: fadeInAnimation ease 2s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+img {
   animation: fadeInAnimation ease 3s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
@@ -80,21 +86,22 @@ ul{
 
 
 .intro-img > img {
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 1);
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.intro-img {
-  max-width: 40vw;
-  margin: 0 auto;
-  margin-bottom: 1vw;
-  margin-top: 1vw;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0.1rem;
-  padding-left: 10vw;
-}
+/*.intro-img {*/
+/*  max-width: 40vw;*/
+/*  margin: 0 auto;*/
+/*  margin-bottom: 1vw;*/
+/*  margin-top: 1vw;*/
+/*  margin-left: auto;*/
+/*  margin-right: auto;*/
+/*  padding: 0.1rem;*/
+/*  padding-left: 10vw;*/
+/*}*/
 
 .intro{
   color: white;
@@ -124,6 +131,7 @@ ul{
 }
 
 .body-image img {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
   width: 100%;
   height: 100%;
   object-fit: cover;
