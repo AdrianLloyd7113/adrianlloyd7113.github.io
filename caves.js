@@ -5,8 +5,8 @@ class Platform {
         this.y = y;
         this.width = w;
         this.height = h;
-        this.boundX = this.x + w;
-        this.boundY = this.y + h;
+        this.boundX = parseFloat(x) + parseFloat(w);
+        this.boundY = parseFloat(y) + parseFloat(h);
     }
 
 }
@@ -19,8 +19,8 @@ class Player {
 
         this.width = 27;
         this.height = 54;
-        this.boundX = x + this.width;
-        this.boundY = y + this.height;
+        this.boundX = x + 27;
+        this.boundY = y + 54;
 
         this.falling = true;
         this.jumping = false;
@@ -42,6 +42,7 @@ canvas.width = window.innerWidth/2;
 canvas.height = window.innerHeight/2;
 
 //Define graphics constants
+const playerRange = canvas.width * 0.8;
 
 const mainScreenElement = document.getElementById('mainScreen');
 const deathScreenElement = document.getElementById('deathScreen');
@@ -189,6 +190,8 @@ function loop(){
     checkCollision();
     checkDeath();
     movePlayer();
+    panCamera();
+
     drawGame();
 
     if (!player.isDead) requestAnimationFrame(loop);
@@ -228,7 +231,8 @@ function checkCollision(){
 
             player.falling = false;
             fGravity = 0;
-            return;
+
+           return;
         }
     }
 
@@ -295,12 +299,24 @@ function movePlayer() {
         player.falling = false;
         fGravity = 0;
     }
+    checkCollision();
 }
 
 function checkDeath() {
     if (player.y > height + player.height/2) {
         die();
     }
+}
+
+//Player death
+function die(){
+    player.isDead = true;
+    deathScreen();
+}
+
+//Player victory
+function finish(){
+    winScreen();
 }
 
 //GRAPHICS
@@ -324,18 +340,28 @@ function drawGame() {
 
 }
 
+//Camera movement
+function panCamera(){
+    if (player.boundX > playerRange) {
+        player.x = playerRange - player.width;
+
+        //Move platform entities
+        for (let i = 0; i < platforms.length; i++) {
+            platforms[i].x = platforms[i].x - moveSpeed;
+        }
+    } else if (player.x < 1) {
+        player.x = 1;
+
+        //Move platform entities
+        for (let i = 0; i < platforms.length; i++) {
+            platforms[i].x = platforms[i].x + moveSpeed;
+        }
+    }
 
 
-//Player death
-function die(){
-    player.isDead = true;
-    deathScreen();
 }
 
-//Player victory
-function finish(){
-    winScreen();
-}
+//LEVEL LOADING
 
 function currentDayNumber(){
     let one_day = 1000 * 60 * 60 * 24;
