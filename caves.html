@@ -3,9 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="caves.css">
+    <div id="mainScreen" class="main-screen">
+        <h1>CAVES</h1>
+        <button id="startButton" class="block-button">Start Game</button>
+        <button id="instructionsButton" class="block-button">Instructions</button>
+    </div>
 
-    <div style="margin-left: 25vw; margin-top: 15vh">
-        <canvas id="gameCanvas" width="1200px" height="675px" style="border: 2px solid black;">
+    <div id="deathScreen" class="death-screen">
+        <h1>You Died!</h1>
+        <button id="tryAgainButton" class="block-button">Try Again</button>
+        <button id="mainScreenButton" class="block-button">Main Menu</button>
+    </div>
+
+    <div id="winScreen" class="win-screen">
+        <h1>You Win!</h1>
+        <button id="finishButton" class="block-button">Main Menu</button>
+    </div>
+
+    <div>
+        <canvas id="gameCanvas" width="1200px" height="675px">
 
         </canvas>
     </div>

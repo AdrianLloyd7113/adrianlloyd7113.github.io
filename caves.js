@@ -16,11 +16,16 @@ class Player {
     constructor(x, y){
         this.x = x;
         this.y = y;
+
         this.width = 27;
         this.height = 54;
         this.boundX = x + this.width;
         this.boundY = y + this.height;
+
         this.falling = true;
+        this.jumping = false;
+
+        this.isDead = false;
     }
 
 }
@@ -36,13 +41,26 @@ const height = 675;
 canvas.width = window.innerWidth/2;
 canvas.height = window.innerHeight/2;
 
-//Define physics constants
-const fGravity = 5;
+//Define graphics constants
+
+const mainScreenElement = document.getElementById('mainScreen');
+const deathScreenElement = document.getElementById('deathScreen');
+const winScreenElement = document.getElementById('winScreen');
+const canvasElement = document.getElementById('gameCanvas');
+
+//Define physics values
+const force = 6;
+const acceleration = 0.1;
+
+let fGravity = 0;
+let fJump = force;
 
 const moveSpeed = 5;
+
 const keys = {
     left: false,
-    right: false
+    right: false,
+    up: false,
 };
 
 //Define images
@@ -57,22 +75,77 @@ platform.src = "game-assets/images/platform.png";
 
 //Define game entities
 const platforms = []
-const player = new Player(0, 0);
+let player = new Player(0, 0);
 
 mainScreen();
 
 //START SCREEN CODE
 
 function mainScreen(){
-    //TODO: add screen
-    start();
+
+    mainScreenElement.style.display = 'block';
+    deathScreenElement.style.display = 'none';
+    winScreenElement.style.display = 'none';
+    canvasElement.style.display = 'none';
+
+    const startButton = document.getElementById('startButton');
+    startButton.addEventListener('click', function() {
+        mainScreenElement.style.display = 'none';
+        start();
+    });
+
+    const instructionsButton = document.getElementById('instructionsButton');
+    instructionsButton.addEventListener('click', function() {
+        //TODO: Add instructions
+    });
 }
+
+function deathScreen(){
+
+    mainScreenElement.style.display = 'none';
+    deathScreenElement.style.display = 'block';
+    winScreenElement.style.display = 'none';
+    canvasElement.style.display = 'none';
+
+    const startButton = document.getElementById('tryAgainButton');
+    startButton.addEventListener('click', function() {
+        player.isDead = false;
+        deathScreenElement.style.display = 'none';
+        start();
+    });
+
+    const instructionsButton = document.getElementById('mainScreenButton');
+    instructionsButton.addEventListener('click', function() {
+        deathScreenElement.style.display = 'none';
+        mainScreen();
+    });
+}
+
+function winScreen(){
+
+    mainScreenElement.style.display = 'none';
+    deathScreenElement.style.display = 'none';
+    winScreenElement.style.display = 'block';
+    canvasElement.style.display = 'none';
+
+    const startButton = document.getElementById('finishButton');
+    startButton.addEventListener('click', function() {
+        winScreenElement.style.display = 'none';
+        mainScreen();
+    });
+
+}
+
 
 //CORE GAME CODE
 
 //Start game
 function start(){
     retrieveLevel();
+    player = new Player(0, 0);
+
+    const canvasElement = document.getElementById('gameCanvas');
+    canvasElement.style.display = 'block';
 
     let loadedImages = 0;
     const totalImages = 3;
@@ -114,10 +187,11 @@ function loop(){
 
     gravity();
     checkCollision();
+    checkDeath();
     movePlayer();
     drawGame();
 
-    requestAnimationFrame(loop);
+    if (!player.isDead) requestAnimationFrame(loop);
 }
 
 //PHYSICS SYSTEM
@@ -125,7 +199,19 @@ function loop(){
 //Gravity
 function gravity(){
     if (player.falling){
+        if (fGravity < force){
+            fGravity += acceleration;
+        }
         player.y += fGravity;
+    } else if (player.jumping){
+        if (fJump > 0){
+            player.y -= fJump;
+            fJump -= acceleration;
+        }else{
+            player.jumping = false;
+            player.falling = true;
+            fJump = force;
+        }
     }
 }
 
@@ -140,13 +226,13 @@ function checkCollision(){
             player.boundY > platform.y &&
             player.y < platform.boundY) {
 
-            // player.y = platform.y - player.height;
             player.falling = false;
+            fGravity = 0;
             return;
         }
     }
 
-    player.falling = true;
+    if (!player.jumping) player.falling = true;
 }
 
 //PLAYER CONTROL
@@ -155,11 +241,22 @@ document.addEventListener('keydown', function(e) {
     switch(e.key) {
         case 'ArrowLeft':
         case 'a':
+            //Flip sprite
+            playerImage.src = "game-assets/images/characterflipped.png";
             keys.left = true;
             break;
         case 'ArrowRight':
         case 'd':
+            playerImage.src = "game-assets/images/character.png";
             keys.right = true;
+            break;
+        case 'ArrowUp':
+        case 'w':
+        case 'Space':
+            if (!player.falling && !player.jumping) keys.up = true;
+            else {
+                keys.up = false;
+            }
             break;
     }
 });
@@ -174,6 +271,14 @@ document.addEventListener('keyup', function(e) {
         case 'd':
             keys.right = false;
             break;
+        case 'ArrowUp':
+        case 'w':
+        case 'Space':
+            player.jumping = false;
+            player.falling = true;
+            fJump = force;
+            keys.up = false;
+            break;
     }
 });
 
@@ -183,6 +288,18 @@ function movePlayer() {
     }
     if (keys.right) {
         player.x += moveSpeed;
+    }
+
+    if (keys.up) {
+        player.jumping = true;
+        player.falling = false;
+        fGravity = 0;
+    }
+}
+
+function checkDeath() {
+    if (player.y > height + player.height/2) {
+        die();
     }
 }
 
@@ -205,26 +322,26 @@ function drawGame() {
     // Draw player
     ctx.drawImage(playerImage, 0, 0, 128, 256, player.x, player.y, 27, 54);
 
-
 }
 
 
 
 //Player death
 function die(){
-
+    player.isDead = true;
+    deathScreen();
 }
 
 //Player victory
 function finish(){
-
+    winScreen();
 }
 
 function currentDayNumber(){
     let one_day = 1000 * 60 * 60 * 24;
 
     let present_date = new Date();
-    let dayOne = new Date(2025, 0, 1);
+    let dayOne = new Date(2025, 0, 2);
 
     console.log("OG " + dayOne.getTime());
     console.log(present_date.getTime());
