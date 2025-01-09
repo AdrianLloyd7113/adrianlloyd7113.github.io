@@ -30,8 +30,25 @@ class Player {
 
 }
 
+class FireColumn {
+    constructor(x){
+        this.x = parseFloat(x);
+        this.fireballs = [];
+    }
+}
+
+class Fireball {
+    constructor(x, y, w, h){
+        this.x = parseFloat(x);
+        this.y = parseFloat(y);
+        this.w = parseFloat(w);
+        this.h = parseFloat(h);
+    }
+}
+
 //INIT CODE
 
+let animationFrameId = null;
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -49,9 +66,15 @@ const deathScreenElement = document.getElementById('deathScreen');
 const winScreenElement = document.getElementById('winScreen');
 const canvasElement = document.getElementById('gameCanvas');
 
+const startButton = document.getElementById('startButton');
+
+//Define game objective values
+let finishX = 10000;
+
 //Define physics values
 const force = 6;
 const acceleration = 0.1;
+const fireballSpeed = 3;
 
 let fGravity = 0;
 let fJump = force;
@@ -64,18 +87,74 @@ const keys = {
     up: false,
 };
 
+//PLAYER CONTROL
+
+const keyDownHandler = function(e) {
+    switch(e.key) {
+        case 'ArrowLeft':
+        case 'a':
+            console.log("Pressed left key");
+            playerImage.src = "game-assets/images/characterflipped.png";
+            keys.left = true;
+            break;
+        case 'ArrowRight':
+        case 'd':
+            console.log("Pressed right key");
+            playerImage.src = "game-assets/images/character.png";
+            keys.right = true;
+            break;
+        case 'ArrowUp':
+        case 'w':
+        case 'Space':
+            keys.up = !player.falling && !player.jumping;
+            break;
+    }
+}
+
+const keyUpHandler = function(e) {
+    switch(e.key) {
+        case 'ArrowLeft':
+        case 'a':
+            keys.left = false;
+            break;
+        case 'ArrowRight':
+        case 'd':
+            keys.right = false;
+            break;
+        case 'ArrowUp':
+        case 'w':
+        case 'Space':
+            player.jumping = false;
+            player.falling = true;
+            fJump = force;
+            keys.up = false;
+            break;
+    }
+}
+
+const startButtonHandler = function(e) {
+    player.isDead = false;
+    mainScreenElement.style.display = 'none';
+    start();
+}
+
 //Define images
 const background = new Image(width, height);
 const playerImage = new Image(20, 100);
 const platform = new Image(500, 100);
+const fireball = new Image(25, 25);
+const finishLine = new Image(100, 1000);
 
 //Set image sources
 background.src = "game-assets/images/background1.png";
 playerImage.src = "game-assets/images/character.png";
 platform.src = "game-assets/images/platform.png";
+fireball.src = "game-assets/images/fireball.png";
+finishLine.src = "game-assets/images/finish.png";
 
 //Define game entities
-const platforms = []
+let platforms = [];
+let fireColumns = [];
 let player = new Player(0, 0);
 
 mainScreen();
@@ -89,11 +168,7 @@ function mainScreen(){
     winScreenElement.style.display = 'none';
     canvasElement.style.display = 'none';
 
-    const startButton = document.getElementById('startButton');
-    startButton.addEventListener('click', function() {
-        mainScreenElement.style.display = 'none';
-        start();
-    });
+    startButton.addEventListener('click', startButtonHandler);
 
     const instructionsButton = document.getElementById('instructionsButton');
     instructionsButton.addEventListener('click', function() {
@@ -102,6 +177,7 @@ function mainScreen(){
 }
 
 function deathScreen(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     mainScreenElement.style.display = 'none';
     deathScreenElement.style.display = 'block';
@@ -109,11 +185,7 @@ function deathScreen(){
     canvasElement.style.display = 'none';
 
     const startButton = document.getElementById('tryAgainButton');
-    startButton.addEventListener('click', function() {
-        player.isDead = false;
-        deathScreenElement.style.display = 'none';
-        start();
-    });
+    startButton.addEventListener('click', startButtonHandler);
 
     const instructionsButton = document.getElementById('mainScreenButton');
     instructionsButton.addEventListener('click', function() {
@@ -143,7 +215,23 @@ function winScreen(){
 //Start game
 function start(){
     retrieveLevel();
+
+    mainScreenElement.style.display = 'none';
+    deathScreenElement.style.display = 'none';
+    winScreenElement.style.display = 'none';
+
+    document.removeEventListener('keydown', keyDownHandler);
+    document.removeEventListener('keyup', keyUpHandler);
+
+    document.addEventListener('keydown', keyDownHandler);
+    document.addEventListener('keyup', keyUpHandler);
+
+    platforms = [];
+    fireColumns = [];
+
     player = new Player(0, 0);
+
+    finishX = 10000;
 
     const canvasElement = document.getElementById('gameCanvas');
     canvasElement.style.display = 'block';
@@ -187,14 +275,32 @@ function start(){
 function loop(){
 
     gravity();
+    updateFireColumn();
+
     checkCollision();
     checkDeath();
+    checkFinish();
     movePlayer();
     panCamera();
 
     drawGame();
 
-    if (!player.isDead) requestAnimationFrame(loop);
+    if (!player.isDead) animationFrameId = requestAnimationFrame(loop);
+}
+
+//ENTITIES
+
+function updateFireColumn(){
+    for (let i = 0; i < fireColumns.length; i++){
+        for (let j = 0; j < fireColumns[i].fireballs.length; j++){
+            if (fireColumns[i].fireballs[j].y < height){
+                fireColumns[i].fireballs[j].y += fireballSpeed;
+                console.log(fireColumns[i].fireballs[j].y);
+            }else{
+                fireColumns[i].fireballs[j] = new Fireball(fireColumns[i].x, 0, 25, 25);
+            }
+        }
+    }
 }
 
 //PHYSICS SYSTEM
@@ -224,6 +330,9 @@ function checkCollision(){
     player.boundY = player.y + player.height;
 
     for (let platform of platforms) {
+        // platform.boundX = platform.x + platform.width;
+        // platform.boundY = platform.y + platform.height;
+
         if (player.boundX > platform.x &&
             player.x < platform.boundX &&
             player.boundY > platform.y &&
@@ -231,70 +340,26 @@ function checkCollision(){
 
             player.falling = false;
             fGravity = 0;
+            return;
 
-           return;
         }
     }
 
     if (!player.jumping) player.falling = true;
 }
 
-//PLAYER CONTROL
-
-document.addEventListener('keydown', function(e) {
-    switch(e.key) {
-        case 'ArrowLeft':
-        case 'a':
-            //Flip sprite
-            playerImage.src = "game-assets/images/characterflipped.png";
-            keys.left = true;
-            break;
-        case 'ArrowRight':
-        case 'd':
-            playerImage.src = "game-assets/images/character.png";
-            keys.right = true;
-            break;
-        case 'ArrowUp':
-        case 'w':
-        case 'Space':
-            if (!player.falling && !player.jumping) keys.up = true;
-            else {
-                keys.up = false;
-            }
-            break;
-    }
-});
-
-document.addEventListener('keyup', function(e) {
-    switch(e.key) {
-        case 'ArrowLeft':
-        case 'a':
-            keys.left = false;
-            break;
-        case 'ArrowRight':
-        case 'd':
-            keys.right = false;
-            break;
-        case 'ArrowUp':
-        case 'w':
-        case 'Space':
-            player.jumping = false;
-            player.falling = true;
-            fJump = force;
-            keys.up = false;
-            break;
-    }
-});
-
 function movePlayer() {
     if (keys.left) {
+        console.log("Moving left");
         player.x -= moveSpeed;
     }
     if (keys.right) {
+        console.log("Moving right");
         player.x += moveSpeed;
     }
 
     if (keys.up) {
+        console.log("Moving up");
         player.jumping = true;
         player.falling = false;
         fGravity = 0;
@@ -308,8 +373,20 @@ function checkDeath() {
     }
 }
 
+function checkFinish() {
+    if (player.x > finishX) {
+        player.isDead = true;
+        finish();
+    }
+}
+
 //Player death
 function die(){
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
+
     player.isDead = true;
     deathScreen();
 }
@@ -323,19 +400,30 @@ function finish(){
 
 //Draw game frame
 function drawGame() {
-    // Clear canvas first
+    //Clear canvas first
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw background
+    //Draw background
     ctx.drawImage(background, 0, 0, width, height, 0, 0, canvas.width, canvas.height);
 
-    // Draw platforms
-    for (i = 0; i < platforms.length; i++) {
+    //Draw platforms
+    for (let i = 0; i < platforms.length; i++) {
         ctx.drawImage(platform, 0, 0, 500, 100, platforms[i].x, platforms[i].y,
             platforms[i].width, platforms[i].height);
     }
 
-    // Draw player
+    //Draw fireballs
+    for (let i = 0; i < fireColumns.length; i++) {
+        for (let j = 0; j < fireColumns[i].fireballs.length; j++) {
+            console.log("Drawing Fireball " + fireColumns[i].x);
+            ctx.drawImage(fireball, 0, 0, 25, 25, fireColumns[i].x, fireColumns[i].fireballs[j].y, 25, 25);
+        }
+    }
+
+    //Draw finish line
+    ctx.drawImage(finishLine, 0, 0, 100, 1000, finishX, 0, 50, 1000);
+
+    //Draw player
     ctx.drawImage(playerImage, 0, 0, 128, 256, player.x, player.y, 27, 54);
 
 }
@@ -348,14 +436,34 @@ function panCamera(){
         //Move platform entities
         for (let i = 0; i < platforms.length; i++) {
             platforms[i].x = platforms[i].x - moveSpeed;
+            platforms[i].boundX = platforms[i].boundX - moveSpeed;
         }
+
+        //Move fire columns
+        for (let i = 0; i < fireColumns.length; i++) {
+            fireColumns[i].x = fireColumns[i].x - moveSpeed;
+        }
+
+        //Move finish line
+        finishX -= moveSpeed;
+
     } else if (player.x < 1) {
         player.x = 1;
 
         //Move platform entities
         for (let i = 0; i < platforms.length; i++) {
             platforms[i].x = platforms[i].x + moveSpeed;
+            platforms[i].boundX = platforms[i].boundX + moveSpeed;
         }
+
+        //Move fire columns
+        for (let i = 0; i < fireColumns.length; i++) {
+            fireColumns[i].x = fireColumns[i].x + moveSpeed;
+        }
+
+
+        //Move finish line
+        finishX += moveSpeed;
     }
 
 
@@ -367,7 +475,7 @@ function currentDayNumber(){
     let one_day = 1000 * 60 * 60 * 24;
 
     let present_date = new Date();
-    let dayOne = new Date(2025, 0, 2);
+    let dayOne = new Date(2025, 0, 8);
 
     console.log("OG " + dayOne.getTime());
     console.log(present_date.getTime());
@@ -399,9 +507,22 @@ function loadLevel(levelData){
             let entData = ents[i].split(",");
             if (entData[0] === "platform"){
                 platforms.push(new Platform(entData[1], entData[2], entData[3], entData[4]));
+            } else if (entData[0] === "firecol"){
+                let newColumn = new FireColumn(entData[1]);
+
+                let firstBall = new Fireball(entData[1], 0, 25, 25);
+                let secondBall = new Fireball(entData[1], -(height/2), 25, 25);
+                let thirdBall = new Fireball(entData[1], -height, 25, 25);
+
+                newColumn.fireballs.push(firstBall, secondBall, thirdBall);
+
+                console.log(newColumn.fireballs);
+                fireColumns.push(newColumn);
+            } else if (entData[0] === "finish"){
+                finishX = parseInt(entData[1]);
             }
         }
-    }else{
+    } else {
         console.log("Bad level data!");
     }
 
