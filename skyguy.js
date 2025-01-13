@@ -46,7 +46,34 @@ class Fireball {
     }
 }
 
+class BadGuy {
+
+    constructor(x, y){
+        this.x = x;
+        this.y = y;
+
+        this.speed = 2;
+
+        this.startY = y;
+        this.limitY = y - 25;
+        this.upward = true;
+
+        this.width = 50;
+        this.height = 50;
+        this.boundX = x + 50;
+        this.boundY = y + 50;
+    }
+
+}
+
 //INIT CODE
+
+let dayOne = new Date(2025, 0, 12);
+let currentDate = new Date();
+
+//User Stats
+let dateLastWon = currentDate;
+let winCount = 0;
 
 let animationFrameId = null;
 const canvas = document.getElementById('gameCanvas');
@@ -90,6 +117,7 @@ const keys = {
 //PLAYER CONTROL
 
 const keyDownHandler = function(e) {
+    checkCollision();
     switch(e.key) {
         case 'ArrowLeft':
         case 'a':
@@ -112,6 +140,7 @@ const keyDownHandler = function(e) {
 }
 
 const keyUpHandler = function(e) {
+    checkCollision();
     switch(e.key) {
         case 'ArrowLeft':
         case 'a':
@@ -143,6 +172,7 @@ const background = new Image(width, height);
 const playerImage = new Image(20, 100);
 const platform = new Image(500, 100);
 const fireball = new Image(25, 25);
+const badGuy = new Image(50, 50);
 const finishLine = new Image(100, 1000);
 
 //Set image sources
@@ -150,11 +180,13 @@ background.src = "game-assets/images/background1.png";
 playerImage.src = "game-assets/images/character.png";
 platform.src = "game-assets/images/platform.png";
 fireball.src = "game-assets/images/fireball.png";
+badGuy.src = "game-assets/images/badguy.png";
 finishLine.src = "game-assets/images/finish.png";
 
 //Define game entities
 let platforms = [];
 let fireColumns = [];
+let badGuys = [];
 let player = new Player(0, 0);
 
 mainScreen();
@@ -168,11 +200,14 @@ function mainScreen(){
     winScreenElement.style.display = 'none';
     canvasElement.style.display = 'none';
 
+    let dateDisplay = document.getElementById('date');
+    dateDisplay.textContent = currentDate.toLocaleDateString('en-US');
+
     startButton.addEventListener('click', startButtonHandler);
 
     const instructionsButton = document.getElementById('instructionsButton');
     instructionsButton.addEventListener('click', function() {
-        //TODO: Add instructions
+        alert("Use WASD or the arrow keys to move.\nAvoid the BadGuys and Fireballs.\nDon't fall off the screen.\nMake it to the finish line to win!")
     });
 }
 
@@ -195,11 +230,13 @@ function deathScreen(){
 }
 
 function winScreen(){
-
     mainScreenElement.style.display = 'none';
     deathScreenElement.style.display = 'none';
     winScreenElement.style.display = 'block';
     canvasElement.style.display = 'none';
+
+    const timesWon = document.getElementById('timesWon');
+    timesWon.textContent = "Daily levels you've beaten: " + winCount;
 
     const startButton = document.getElementById('finishButton');
     startButton.addEventListener('click', function() {
@@ -215,6 +252,7 @@ function winScreen(){
 //Start game
 function start(){
     retrieveLevel();
+    retrieveUserStats();
 
     mainScreenElement.style.display = 'none';
     deathScreenElement.style.display = 'none';
@@ -228,6 +266,7 @@ function start(){
 
     platforms = [];
     fireColumns = [];
+    badGuys = [];
 
     player = new Player(0, 0);
 
@@ -276,6 +315,7 @@ function loop(){
 
     gravity();
     updateFireColumn();
+    badGuyJump();
 
     checkCollision();
     checkDeath();
@@ -295,9 +335,26 @@ function updateFireColumn(){
         for (let j = 0; j < fireColumns[i].fireballs.length; j++){
             if (fireColumns[i].fireballs[j].y < height){
                 fireColumns[i].fireballs[j].y += fireballSpeed;
-                console.log(fireColumns[i].fireballs[j].y);
             }else{
                 fireColumns[i].fireballs[j] = new Fireball(fireColumns[i].x, 0, 25, 25);
+            }
+        }
+    }
+}
+
+function badGuyJump(){
+    for (let i = 0; i < badGuys.length; i++){
+        if (badGuys[i].upward){
+            if (badGuys[i].y > badGuys[i].limitY){
+                badGuys[i].y -= badGuys[i].speed;
+            } else {
+                badGuys[i].upward = false;
+            }
+        } else {
+            if (badGuys[i].y < badGuys[i].startY){
+                badGuys[i].y += badGuys[i].speed;
+            } else {
+                badGuys[i].upward = true;
             }
         }
     }
@@ -329,6 +386,7 @@ function checkCollision(){
     player.boundX = player.x + player.width;
     player.boundY = player.y + player.height;
 
+    //Platform collision
     for (let platform of platforms) {
         // platform.boundX = platform.x + platform.width;
         // platform.boundY = platform.y + platform.height;
@@ -342,6 +400,25 @@ function checkCollision(){
             fGravity = 0;
             return;
 
+        }
+    }
+
+    //Fireball collision
+    for (let i = 0; i < fireColumns.length; i++) {
+        if (player.boundX > fireColumns[i].x && player.x < (fireColumns[i].x + 25)) {
+            for (let fireball of fireColumns[i].fireballs){
+                if ((fireball.y + 25) > player.y && fireball.y < player.boundY) {
+                    die();
+                }
+            }
+        }
+    }
+
+    //Bad guy collision
+    for (let i = 0; i < badGuys.length; i++) {
+        if (player.boundX > badGuys[i].x && player.x < (badGuys[i].x + badGuys[i].width) &&
+            player.y < (badGuys[i].y + badGuys[i].height) && player.boundY > badGuys[i].y) {
+            die();
         }
     }
 
@@ -393,6 +470,12 @@ function die(){
 
 //Player victory
 function finish(){
+
+    if (dateLastWon !== currentDate || winCount === 0){
+        winCount++;
+        localStorage.setItem('winCount', winCount);
+    }
+    console.log("You have beaten " + winCount + " levels!");
     winScreen();
 }
 
@@ -410,6 +493,10 @@ function drawGame() {
     for (let i = 0; i < platforms.length; i++) {
         ctx.drawImage(platform, 0, 0, 500, 100, platforms[i].x, platforms[i].y,
             platforms[i].width, platforms[i].height);
+    }
+
+    for (let i = 0; i < badGuys.length; i++) {
+        ctx.drawImage(badGuy, 0, 0, 100, 100, badGuys[i].x, badGuys[i].y, 50, 50);
     }
 
     //Draw fireballs
@@ -444,6 +531,11 @@ function panCamera(){
             fireColumns[i].x = fireColumns[i].x - moveSpeed;
         }
 
+        //Move bad guys
+        for (let i = 0; i < badGuys.length; i++) {
+            badGuys[i].x = badGuys[i].x - moveSpeed;
+        }
+
         //Move finish line
         finishX -= moveSpeed;
 
@@ -461,6 +553,10 @@ function panCamera(){
             fireColumns[i].x = fireColumns[i].x + moveSpeed;
         }
 
+        //Move bad guys
+        for (let i = 0; i < badGuys.length; i++) {
+            badGuys[i].x = badGuys[i].x + moveSpeed;
+        }
 
         //Move finish line
         finishX += moveSpeed;
@@ -475,7 +571,6 @@ function currentDayNumber(){
     let one_day = 1000 * 60 * 60 * 24;
 
     let present_date = new Date();
-    let dayOne = new Date(2025, 0, 8);
 
     console.log("OG " + dayOne.getTime());
     console.log(present_date.getTime());
@@ -497,6 +592,18 @@ function retrieveLevel(){
         .catch(error => console.error('Error loading level:', error));
 }
 
+function retrieveUserStats(){
+
+    //Win count
+    winCount = localStorage.getItem('winCount') ? parseInt(localStorage.getItem('winCount')) : 0;
+
+    //Date last won
+    let date = localStorage.getItem('lastPlayed');
+    if (date){
+        dateLastWon = new Date(date);
+    }
+
+}
 
 //Load level data into object arrays
 function loadLevel(levelData){
@@ -507,6 +614,10 @@ function loadLevel(levelData){
             let entData = ents[i].split(",");
             if (entData[0] === "platform"){
                 platforms.push(new Platform(entData[1], entData[2], entData[3], entData[4]));
+                if (entData[5] === "badguy"){
+                    let guyX = parseFloat(entData[1]) + parseFloat(entData[3])/2 - 25;
+                    badGuys.push(new BadGuy(guyX, entData[2] - 50));
+                }
             } else if (entData[0] === "firecol"){
                 let newColumn = new FireColumn(entData[1]);
 
@@ -527,3 +638,4 @@ function loadLevel(levelData){
     }
 
 }
+

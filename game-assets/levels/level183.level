@@ -1,0 +1,1 @@
+platform,0,360,200,30,no;platform,250,168,132,30,badguy;platform,482,301,158,30,badguy;platform,740,225,139,30,no;platform,979,206,111,30,badguy;platform,1190,315,110,30,no;firecol,1400;firecol,1450;platform,1500,342,166,30,no;firecol,1766;platform,1816,196,148,30,no;firecol,2064;platform,2114,271,108,30,no;platform,2322,118,165,30,badguy;finish,2787;
