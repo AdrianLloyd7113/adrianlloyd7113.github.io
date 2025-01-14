@@ -107,8 +107,8 @@ let canPlayJump = true;
 let finishX = 10000;
 
 //Define physics values
-const force = 6;
-const acceleration = 0.1;
+const force = 8;
+const acceleration = 0.3;
 const fireballSpeed = 3;
 
 let fGravity = 0;
@@ -214,7 +214,7 @@ function mainScreen(){
 
     const instructionsButton = document.getElementById('instructionsButton');
     instructionsButton.addEventListener('click', function() {
-        alert("Use WASD or the arrow keys to move.\nAvoid the BadGuys and Fireballs.\nDon't fall off the screen.\nMake it to the finish line to win!")
+        alert("Use WASD or the arrow keys to move.\n Hold jump (W/Up arrow) to double-jump.\nAvoid the red guys and Fireballs.\nDon't fall off the screen.\nMake it to the finish line to win!")
     });
 }
 
