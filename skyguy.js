@@ -75,6 +75,8 @@ let currentDate = new Date();
 let dateLastWon = currentDate;
 let winCount = 0;
 
+let attempts = 0;
+
 let animationFrameId = null;
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -94,6 +96,12 @@ const winScreenElement = document.getElementById('winScreen');
 const canvasElement = document.getElementById('gameCanvas');
 
 const startButton = document.getElementById('startButton');
+
+//Define audio constants
+// const jump = new Audio('game-assets/audio/jump.mp3');
+// const deathSound = new Audio('game-assets/audio/death.wav');
+
+let canPlayJump = true;
 
 //Define game objective values
 let finishX = 10000;
@@ -121,13 +129,11 @@ const keyDownHandler = function(e) {
     switch(e.key) {
         case 'ArrowLeft':
         case 'a':
-            console.log("Pressed left key");
             playerImage.src = "game-assets/images/characterflipped.png";
             keys.left = true;
             break;
         case 'ArrowRight':
         case 'd':
-            console.log("Pressed right key");
             playerImage.src = "game-assets/images/character.png";
             keys.right = true;
             break;
@@ -153,6 +159,7 @@ const keyUpHandler = function(e) {
         case 'ArrowUp':
         case 'w':
         case 'Space':
+            canPlayJump = true;
             player.jumping = false;
             player.falling = true;
             fJump = force;
@@ -236,7 +243,7 @@ function winScreen(){
     canvasElement.style.display = 'none';
 
     const timesWon = document.getElementById('timesWon');
-    timesWon.textContent = "Daily levels you've beaten: " + winCount;
+    timesWon.textContent = "You died " + attempts + "times on today's level.\nDaily levels you've beaten: " + winCount;
 
     const startButton = document.getElementById('finishButton');
     startButton.addEventListener('click', function() {
@@ -394,7 +401,7 @@ function checkCollision(){
         if (player.boundX > platform.x &&
             player.x < platform.boundX &&
             player.boundY > platform.y &&
-            player.y < platform.boundY) {
+            (player.y + 4*(player.height/5)) < platform.boundY) {
 
             player.falling = false;
             fGravity = 0;
@@ -427,16 +434,23 @@ function checkCollision(){
 
 function movePlayer() {
     if (keys.left) {
-        console.log("Moving left");
         player.x -= moveSpeed;
     }
     if (keys.right) {
-        console.log("Moving right");
         player.x += moveSpeed;
     }
 
     if (keys.up) {
-        console.log("Moving up");
+        // jump.load();
+        // if (canPlayJump){
+        //     jump.play().then(() => {
+        //         console.log("Jump sound played!");
+        //     }).catch((error) => {
+        //         console.error("Error playing audio:", error);
+        //     });
+        //     canPlayJump = false;
+        // }
+
         player.jumping = true;
         player.falling = false;
         fGravity = 0;
@@ -459,10 +473,17 @@ function checkFinish() {
 
 //Player death
 function die(){
+    attempts++;
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
     }
+
+    // deathSound.play().then(() => {
+    //     console.log("Jump sound played!");
+    // }).catch((error) => {
+    //     console.error("Error playing audio:", error);
+    // });
 
     player.isDead = true;
     deathScreen();
@@ -475,7 +496,6 @@ function finish(){
         winCount++;
         localStorage.setItem('winCount', winCount);
     }
-    console.log("You have beaten " + winCount + " levels!");
     winScreen();
 }
 
@@ -502,7 +522,6 @@ function drawGame() {
     //Draw fireballs
     for (let i = 0; i < fireColumns.length; i++) {
         for (let j = 0; j < fireColumns[i].fireballs.length; j++) {
-            console.log("Drawing Fireball " + fireColumns[i].x);
             ctx.drawImage(fireball, 0, 0, 25, 25, fireColumns[i].x, fireColumns[i].fireballs[j].y, 25, 25);
         }
     }
@@ -572,9 +591,6 @@ function currentDayNumber(){
 
     let present_date = new Date();
 
-    console.log("OG " + dayOne.getTime());
-    console.log(present_date.getTime());
-
     return Math.floor((present_date.getTime() - dayOne.getTime()) / one_day).
     toFixed(0);
 
@@ -582,7 +598,6 @@ function currentDayNumber(){
 
 function retrieveLevel(){
     levelSrc = "game-assets/levels/level" + currentDayNumber() + ".level";
-    console.log(levelSrc);
 
     fetch(levelSrc)
         .then(response => response.text())
@@ -627,7 +642,6 @@ function loadLevel(levelData){
 
                 newColumn.fireballs.push(firstBall, secondBall, thirdBall);
 
-                console.log(newColumn.fireballs);
                 fireColumns.push(newColumn);
             } else if (entData[0] === "finish"){
                 finishX = parseInt(entData[1]);
