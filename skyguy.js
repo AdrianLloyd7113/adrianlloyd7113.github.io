@@ -97,6 +97,9 @@ const canvasElement = document.getElementById('gameCanvas');
 
 const startButton = document.getElementById('startButton');
 
+let lastTime = performance.now();
+let deltaTime = 1/1000;
+
 //Define audio constants
 // const jump = new Audio('game-assets/audio/jump.mp3');
 // const deathSound = new Audio('game-assets/audio/death.wav');
@@ -107,14 +110,14 @@ let canPlayJump = true;
 let finishX = 10000;
 
 //Define physics values
-const force = 8;
-const acceleration = 0.3;
-const fireballSpeed = 3;
+let force = 8;
+let acceleration = 0.3;
+let fireballSpeed = 3;
 
 let fGravity = 0;
 let fJump = force;
 
-const moveSpeed = 5;
+let moveSpeed = 300;
 
 const keys = {
     left: false,
@@ -226,6 +229,8 @@ function deathScreen(){
     winScreenElement.style.display = 'none';
     canvasElement.style.display = 'none';
 
+    attempts++;
+
     const startButton = document.getElementById('tryAgainButton');
     startButton.addEventListener('click', startButtonHandler);
 
@@ -243,7 +248,7 @@ function winScreen(){
     canvasElement.style.display = 'none';
 
     const timesWon = document.getElementById('timesWon');
-    timesWon.textContent = "You died " + attempts + "times on today's level.\nDaily levels you've beaten: " + winCount;
+    timesWon.textContent = "You died " + attempts + " times on today's level.\nDaily levels you've beaten: " + winCount + " \n";
 
     const startButton = document.getElementById('finishButton');
     startButton.addEventListener('click', function() {
@@ -318,7 +323,8 @@ function start(){
 }
 
 //Main game loop
-function loop(){
+function loop(currentTime){
+    updateDeltaTime(currentTime)
 
     gravity();
     updateFireColumn();
@@ -434,10 +440,10 @@ function checkCollision(){
 
 function movePlayer() {
     if (keys.left) {
-        player.x -= moveSpeed;
+        player.x -= moveSpeed * deltaTime;
     }
     if (keys.right) {
-        player.x += moveSpeed;
+        player.x += moveSpeed * deltaTime;
     }
 
     if (keys.up) {
@@ -473,7 +479,6 @@ function checkFinish() {
 
 //Player death
 function die(){
-    attempts++;
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
@@ -500,6 +505,18 @@ function finish(){
 }
 
 //GRAPHICS
+
+//deltaTime update
+function updateDeltaTime(currentTime){
+    deltaTime = (currentTime - lastTime) / 1000;
+    lastTime = currentTime;
+    //
+    // moveSpeed *= deltaTime;
+    // fireballSpeed *= deltaTime;
+    // acceleration *= deltaTime;
+    // force *= deltaTime;
+
+}
 
 //Draw game frame
 function drawGame() {
@@ -541,44 +558,44 @@ function panCamera(){
 
         //Move platform entities
         for (let i = 0; i < platforms.length; i++) {
-            platforms[i].x = platforms[i].x - moveSpeed;
-            platforms[i].boundX = platforms[i].boundX - moveSpeed;
+            platforms[i].x = platforms[i].x - moveSpeed  * deltaTime;
+            platforms[i].boundX = platforms[i].boundX - moveSpeed  * deltaTime;
         }
 
         //Move fire columns
         for (let i = 0; i < fireColumns.length; i++) {
-            fireColumns[i].x = fireColumns[i].x - moveSpeed;
+            fireColumns[i].x = fireColumns[i].x - moveSpeed  * deltaTime;
         }
 
         //Move bad guys
         for (let i = 0; i < badGuys.length; i++) {
-            badGuys[i].x = badGuys[i].x - moveSpeed;
+            badGuys[i].x = badGuys[i].x - moveSpeed  * deltaTime;
         }
 
         //Move finish line
-        finishX -= moveSpeed;
+        finishX -= moveSpeed  * deltaTime;
 
     } else if (player.x < 1) {
         player.x = 1;
 
         //Move platform entities
         for (let i = 0; i < platforms.length; i++) {
-            platforms[i].x = platforms[i].x + moveSpeed;
-            platforms[i].boundX = platforms[i].boundX + moveSpeed;
+            platforms[i].x = platforms[i].x + moveSpeed  * deltaTime;
+            platforms[i].boundX = platforms[i].boundX + moveSpeed  * deltaTime;
         }
 
         //Move fire columns
         for (let i = 0; i < fireColumns.length; i++) {
-            fireColumns[i].x = fireColumns[i].x + moveSpeed;
+            fireColumns[i].x = fireColumns[i].x + moveSpeed  * deltaTime;
         }
 
         //Move bad guys
         for (let i = 0; i < badGuys.length; i++) {
-            badGuys[i].x = badGuys[i].x + moveSpeed;
+            badGuys[i].x = badGuys[i].x + moveSpeed  * deltaTime;
         }
 
         //Move finish line
-        finishX += moveSpeed;
+        finishX += moveSpeed  * deltaTime;
     }
 
 
