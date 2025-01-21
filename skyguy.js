@@ -110,9 +110,9 @@ let canPlayJump = true;
 let finishX = 10000;
 
 //Define physics values
-let force = 8;
-let acceleration = 0.3;
-let fireballSpeed = 3;
+let force = 480;
+let acceleration = 18;
+let fireballSpeed = 180;
 
 let fGravity = 0;
 let fJump = force;
@@ -347,7 +347,7 @@ function updateFireColumn(){
     for (let i = 0; i < fireColumns.length; i++){
         for (let j = 0; j < fireColumns[i].fireballs.length; j++){
             if (fireColumns[i].fireballs[j].y < height){
-                fireColumns[i].fireballs[j].y += fireballSpeed;
+                fireColumns[i].fireballs[j].y += fireballSpeed * deltaTime;
             }else{
                 fireColumns[i].fireballs[j] = new Fireball(fireColumns[i].x, 0, 25, 25);
             }
@@ -381,10 +381,10 @@ function gravity(){
         if (fGravity < force){
             fGravity += acceleration;
         }
-        player.y += fGravity;
+        player.y += fGravity * deltaTime;
     } else if (player.jumping){
         if (fJump > 0){
-            player.y -= fJump;
+            player.y -= fJump * deltaTime;
             fJump -= acceleration;
         }else{
             player.jumping = false;
