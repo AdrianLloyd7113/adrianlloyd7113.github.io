@@ -128,40 +128,44 @@ const keys = {
 //PLAYER CONTROL
 
 const keyDownHandler = function(e) {
-    checkCollision();
     switch(e.key) {
         case 'ArrowLeft':
         case 'a':
+            checkCollision();
             playerImage.src = "game-assets/images/characterflipped.png";
             keys.left = true;
             break;
         case 'ArrowRight':
         case 'd':
+            checkCollision();
             playerImage.src = "game-assets/images/character.png";
             keys.right = true;
             break;
         case 'ArrowUp':
         case 'w':
         case 'Space':
+            checkCollision();
             keys.up = !player.falling && !player.jumping;
             break;
     }
 }
 
 const keyUpHandler = function(e) {
-    checkCollision();
     switch(e.key) {
         case 'ArrowLeft':
         case 'a':
+            checkCollision();
             keys.left = false;
             break;
         case 'ArrowRight':
         case 'd':
+            checkCollision();
             keys.right = false;
             break;
         case 'ArrowUp':
         case 'w':
         case 'Space':
+            checkCollision();
             canPlayJump = true;
             player.jumping = false;
             player.falling = true;
@@ -172,6 +176,10 @@ const keyUpHandler = function(e) {
 }
 
 const startButtonHandler = function(e) {
+    audio.play().catch(error => {
+        console.log('Background music playback failed:', error);
+    });
+
     player.isDead = false;
     mainScreenElement.style.display = 'none';
     start();
@@ -218,6 +226,12 @@ function mainScreen(){
     const instructionsButton = document.getElementById('instructionsButton');
     instructionsButton.addEventListener('click', function() {
         alert("Use WASD or the arrow keys to move.\n Hold jump (W/Up arrow) to double-jump.\nAvoid the red guys and Fireballs.\nDon't fall off the screen.\nMake it to the finish line to win!")
+    });
+
+    const creditsButton = document.getElementById('creditsButton');
+    creditsButton.addEventListener('click', function() {
+        alert("Music:\n\"Cyborg Ninja\" Kevin MacLeod (incompetech.com)\nLicensed under Creative Commons: By Attribution 4.0 License\nhttp://creativecommons.org/licenses/by/4.0/" +
+            "\n\nEverything else by Adrian Lloyd.")
     });
 }
 
@@ -330,7 +344,7 @@ function loop(currentTime){
     updateFireColumn();
     badGuyJump();
 
-    checkCollision();
+    if (!player.isDead) checkCollision();
     checkDeath();
     checkFinish();
     movePlayer();
@@ -399,23 +413,6 @@ function checkCollision(){
     player.boundX = player.x + player.width;
     player.boundY = player.y + player.height;
 
-    //Platform collision
-    for (let platform of platforms) {
-        // platform.boundX = platform.x + platform.width;
-        // platform.boundY = platform.y + platform.height;
-
-        if (player.boundX > platform.x &&
-            player.x < platform.boundX &&
-            player.boundY > platform.y &&
-            (player.y + 4*(player.height/5)) < platform.boundY) {
-
-            player.falling = false;
-            fGravity = 0;
-            return;
-
-        }
-    }
-
     //Fireball collision
     for (let i = 0; i < fireColumns.length; i++) {
         if (player.boundX > fireColumns[i].x && player.x < (fireColumns[i].x + 25)) {
@@ -430,8 +427,25 @@ function checkCollision(){
     //Bad guy collision
     for (let i = 0; i < badGuys.length; i++) {
         if (player.boundX > badGuys[i].x && player.x < (badGuys[i].x + badGuys[i].width) &&
-            player.y < (badGuys[i].y + badGuys[i].height) && player.boundY > badGuys[i].y) {
+            player.y < (badGuys[i].y + badGuys[i].height + 50) && player.boundY > badGuys[i].y) {
             die();
+        }
+    }
+
+    //Platform collision
+    for (let platform of platforms) {
+        // platform.boundX = platform.x + platform.width;
+        // platform.boundY = platform.y + platform.height;
+
+        if (player.boundX > platform.x &&
+            player.x < platform.boundX &&
+            player.boundY > platform.y &&
+            (player.y + 4*(player.height/5)) < platform.boundY) {
+
+            player.falling = false;
+            fGravity = 0;
+            return;
+
         }
     }
 
@@ -479,6 +493,7 @@ function checkFinish() {
 
 //Player death
 function die(){
+    player = new Player(0,0);
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;

@@ -274,6 +274,17 @@ ul{
     text-align: center;
   }
 
+.faq {
+  max-width: 75vw;
+  margin: 0 auto;
+  margin-bottom: 1vw;
+  margin-top: 1vw;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
   /* project page ends */
   h1 {
     font-size: 3rem;

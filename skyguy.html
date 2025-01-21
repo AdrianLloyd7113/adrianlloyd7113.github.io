@@ -5,10 +5,14 @@
     <title>Sky Guy</title>
     <link rel="stylesheet" href="skyguy.css">
     <div id="mainScreen" class="main-screen">
-        <h1>SKY GUY</h1>
+<!--        <h1 id="skyguylogo">SKY GUY</h1>-->
+
+        <img id="sg-logo" src="game-assets/images/logo.png" alt="The Sky Guy logo.">
+
         <h2 id="date"><i>January 1st, 2000!</i></h2>
         <button id="startButton" class="block-button">Start Game</button>
         <button id="instructionsButton" class="block-button">Instructions</button>
+        <button id="creditsButton" class="block-button">Credits</button>
         <br>
         <h4>Beta 0.1.0</h4>
         <p style="font-weight: bold">By Adrian Lloyd</p>
@@ -35,12 +39,16 @@
         </canvas>
     </div>
 
-    <script src="skyguy.js"></script>
+<!--Music-->
+    <script src="audio.js"></script>
 
+    <script src="skyguy.js"></script>
 </head>
 
 <!--Google Analytics-->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6737R5S4CJ"></script>
+
+<!--Game script-->
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}

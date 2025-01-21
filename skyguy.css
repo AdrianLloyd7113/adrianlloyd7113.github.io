@@ -35,3 +35,8 @@ canvas {
     display: block;
     margin: 0 auto;
 }
+
+#sg-logo{
+    max-width: 20vw;
+    max-height: 50vh;
+}
