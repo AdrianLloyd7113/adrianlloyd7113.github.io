@@ -182,7 +182,13 @@ const startButtonHandler = function(e) {
 
     player.isDead = false;
     mainScreenElement.style.display = 'none';
-    start();
+
+    if (player.x === 0 && player.y === 0) start();
+    else {
+        player.x = 0;
+        player.y = 0;
+        start()
+    };
 }
 
 //Define images
@@ -277,7 +283,6 @@ function winScreen(){
 
 //Start game
 function start(){
-    retrieveLevel();
     retrieveUserStats();
 
     mainScreenElement.style.display = 'none';
@@ -294,7 +299,10 @@ function start(){
     fireColumns = [];
     badGuys = [];
 
-    player = new Player(0, 0);
+    retrieveLevel();
+
+    player.x = 0;
+    player.y = 0;
 
     finishX = 10000;
 
@@ -333,7 +341,12 @@ function start(){
         drawGame();
     }
 
-    requestAnimationFrame(loop);
+    if (player.x === 0 && player.y === 0) requestAnimationFrame(loop);
+    else {
+        player.x = 0;
+        player.y = 0;
+        requestAnimationFrame(loop);
+    }
 }
 
 //Main game loop
@@ -347,12 +360,13 @@ function loop(currentTime){
     if (!player.isDead) checkCollision();
     checkDeath();
     checkFinish();
-    movePlayer();
+    if (!player.isDead) movePlayer();
     panCamera();
 
     drawGame();
 
     if (!player.isDead) animationFrameId = requestAnimationFrame(loop);
+    else return;
 }
 
 //ENTITIES
@@ -493,7 +507,15 @@ function checkFinish() {
 
 //Player death
 function die(){
+    document.removeEventListener('keydown', keyDownHandler);
+    document.removeEventListener('keyup', keyUpHandler);
+
+    keys.left = false;
+    keys.up = false;
+    keys.right = false;
+
     player = new Player(0,0);
+
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
