@@ -154,23 +154,22 @@ const keyUpHandler = function(e) {
     switch(e.key) {
         case 'ArrowLeft':
         case 'a':
-            checkCollision();
             keys.left = false;
             break;
         case 'ArrowRight':
         case 'd':
-            checkCollision();
             keys.right = false;
+            checkCollision();
             break;
         case 'ArrowUp':
         case 'w':
         case 'Space':
-            checkCollision();
             canPlayJump = true;
             player.jumping = false;
             player.falling = true;
             fJump = force;
             keys.up = false;
+            checkCollision();
             break;
     }
 }
@@ -456,6 +455,7 @@ function checkCollision(){
             player.boundY > platform.y &&
             (player.y + 4*(player.height/5)) < platform.boundY) {
 
+            if (player.falling && !keys.right && !keys.left && !keys.up) player.y = platform.y - player.height;
             player.falling = false;
             fGravity = 0;
             return;
