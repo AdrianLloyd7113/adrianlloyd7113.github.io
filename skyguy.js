@@ -131,21 +131,21 @@ const keyDownHandler = function(e) {
     switch(e.key) {
         case 'ArrowLeft':
         case 'a':
-            checkCollision();
             playerImage.src = "game-assets/images/characterflipped.png";
             keys.left = true;
+            checkCollision();
             break;
         case 'ArrowRight':
         case 'd':
-            checkCollision();
             playerImage.src = "game-assets/images/character.png";
             keys.right = true;
+            checkCollision();
             break;
         case 'ArrowUp':
         case 'w':
         case 'Space':
-            checkCollision();
             keys.up = !player.falling && !player.jumping;
+            checkCollision();
             break;
     }
 }
@@ -455,7 +455,13 @@ function checkCollision(){
             player.boundY > platform.y &&
             (player.y + 4*(player.height/5)) < platform.boundY) {
 
-            if (player.falling && !keys.right && !keys.left && !keys.up) player.y = platform.y - player.height;
+            // WIP Collision fixes...
+
+            // if (player.falling && !keys.right && !keys.left && !keys.up){
+            //     let deviation = player.boundY - platform.y;
+            //     if (deviation > 0) player.y -= deviation;
+            // }
+
             player.falling = false;
             fGravity = 0;
             return;
