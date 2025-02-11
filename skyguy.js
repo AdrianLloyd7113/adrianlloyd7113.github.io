@@ -1,12 +1,12 @@
 class Platform {
 
     constructor(x, y, w, h){
-        this.x = x;
-        this.y = y;
-        this.width = w;
-        this.height = h;
-        this.boundX = parseFloat(x) + parseFloat(w);
-        this.boundY = parseFloat(y) + parseFloat(h);
+        this.x = parseFloat(x);
+        this.y = parseFloat(y);
+        this.width = parseFloat(w);
+        this.height = parseFloat(h);
+        this.boundX = this.x + this.width;
+        this.boundY = this.y + this.height;
     }
 
 }
@@ -14,8 +14,8 @@ class Platform {
 class Player {
 
     constructor(x, y){
-        this.x = x;
-        this.y = y;
+        this.x = parseFloat(x);
+        this.y = parseFloat(y);
 
         this.width = 27;
         this.height = 54;
@@ -184,8 +184,6 @@ const startButtonHandler = function(e) {
 
     if (player.x === 0 && player.y === 0) start();
     else {
-        player.x = 0;
-        player.y = 0;
         start()
     };
 }
@@ -282,6 +280,7 @@ function winScreen(){
 
 //Start game
 function start(){
+    lastTime = performance.now();
     retrieveUserStats();
 
     mainScreenElement.style.display = 'none';
@@ -300,8 +299,13 @@ function start(){
 
     retrieveLevel();
 
-    player.x = 0;
-    player.y = 0;
+    if (platforms.length > 0) {
+        player.x = platforms[0].x;
+        player.y = platforms[0].y - player.height;
+    } else {
+        player.x = 0;
+        player.y = 0;
+    }
 
     finishX = 10000;
 
@@ -342,8 +346,13 @@ function start(){
 
     if (player.x === 0 && player.y === 0) requestAnimationFrame(loop);
     else {
-        player.x = 0;
-        player.y = 0;
+        if (platforms.length > 0) {
+            player.x = platforms[0].x;
+            player.y = platforms[0].y - player.height;
+        } else {
+            player.x = 0;
+            player.y = 0;
+        }
         requestAnimationFrame(loop);
     }
 }
@@ -612,7 +621,7 @@ function panCamera(){
 
         //Move bad guys
         for (let i = 0; i < badGuys.length; i++) {
-            badGuys[i].x = badGuys[i].x - moveSpeed  * deltaTime;
+            badGuys[i].x = badGuys[i].x - moveSpeed * deltaTime;
         }
 
         //Move finish line
@@ -621,15 +630,17 @@ function panCamera(){
     } else if (player.x < 1) {
         player.x = 1;
 
+        console.log(deltaTime);
+
         //Move platform entities
         for (let i = 0; i < platforms.length; i++) {
-            platforms[i].x = platforms[i].x + moveSpeed  * deltaTime;
-            platforms[i].boundX = platforms[i].boundX + moveSpeed  * deltaTime;
+            platforms[i].x = platforms[i].x + moveSpeed * deltaTime;
+            platforms[i].boundX = platforms[i].boundX + moveSpeed * deltaTime;
         }
 
         //Move fire columns
         for (let i = 0; i < fireColumns.length; i++) {
-            fireColumns[i].x = fireColumns[i].x + moveSpeed  * deltaTime;
+            fireColumns[i].x = fireColumns[i].x + moveSpeed * deltaTime;
         }
 
         //Move bad guys
@@ -677,6 +688,8 @@ function retrieveUserStats(){
     if (date){
         dateLastWon = new Date(date);
     }
+
+    localStorage.setItem('lastPlayed', dateLastWon);
 
 }
 
