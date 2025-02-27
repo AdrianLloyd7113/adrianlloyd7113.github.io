@@ -273,6 +273,13 @@ function winScreen(){
         mainScreen();
     });
 
+    const shareButton = document.getElementById('shareButton');
+    shareButton.addEventListener('click', function() {
+        const message = "I beat today’s level on Sky Guy! \n\nI died " + attempts + " times today.\nI’ve beaten " + winCount + " daily levels!\nThink you can do better than me? Play now at:\nhttp://adrianlloyd.xyz/skyguy\n"
+        navigator.clipboard.writeText(message);
+        alert("Copied the following to your clipboard: \n\n" + message);
+    });
+
 }
 
 
