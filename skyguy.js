@@ -197,9 +197,9 @@ const badGuy = new Image(50, 50);
 const finishLine = new Image(100, 1000);
 
 //Set image sources
-background.src = "game-assets/images/background1.png";
+background.src = "game-assets/images/background3.png";
 playerImage.src = "game-assets/images/character.png";
-platform.src = "game-assets/images/platform.png";
+platform.src = "game-assets/images/platform1.png";
 fireball.src = "game-assets/images/fireball.png";
 badGuy.src = "game-assets/images/badguy.png";
 finishLine.src = "game-assets/images/finish.png";
@@ -222,7 +222,7 @@ function mainScreen(){
     canvasElement.style.display = 'none';
 
     let dateDisplay = document.getElementById('date');
-    dateDisplay.textContent = currentDate.toLocaleDateString('en-US');
+    dateDisplay.textContent = "Level " + currentDayNumber() + ": " + currentDate.toLocaleDateString('en-US');
 
     startButton.addEventListener('click', startButtonHandler);
 
@@ -718,6 +718,9 @@ function loadLevel(levelData){
                 fireColumns.push(newColumn);
             } else if (entData[0] === "finish"){
                 finishX = parseInt(entData[1]);
+            } else if (entData[0] === "theme"){
+                background.src =  "game-assets/images/background" + entData[1] + ".png";
+                platform.src = "game-assets/images/platform" + entData[1] + ".png";
             }
         }
     } else {
