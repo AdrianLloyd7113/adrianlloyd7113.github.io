@@ -117,6 +117,7 @@ let fireballSpeed = 180;
 let fGravity = 0;
 let fJump = force;
 
+let playerWalkTime = 0;
 let moveSpeed = 300;
 
 const keys = {
@@ -131,13 +132,15 @@ const keyDownHandler = function(e) {
     switch(e.key) {
         case 'ArrowLeft':
         case 'a':
-            playerImage.src = "game-assets/images/characterflipped.png";
+            if (!playerImage.src.endsWith("characterflipped.png") && !playerImage.src.endsWith("characterwalkflipped.png"))
+                playerImage.src = "game-assets/images/characterflipped.png";
             keys.left = true;
             checkCollision();
             break;
         case 'ArrowRight':
         case 'd':
-            playerImage.src = "game-assets/images/character.png";
+            if (!playerImage.src.endsWith("character.png") && !playerImage.src.endsWith("character.png"))
+                playerImage.src = "game-assets/images/character.png";
             keys.right = true;
             checkCollision();
             break;
@@ -145,6 +148,11 @@ const keyDownHandler = function(e) {
         case 'w':
         case 'Space':
             keys.up = !player.falling && !player.jumping;
+            if (keys.left){
+                playerImage.src = "game-assets/images/characterjumpflipped.png";
+            }else{
+                playerImage.src = "game-assets/images/characterjump.png";
+            }
             checkCollision();
             break;
     }
@@ -170,6 +178,11 @@ const keyUpHandler = function(e) {
             fJump = force;
             keys.up = false;
             checkCollision();
+            if (keys.left){
+                playerImage.src = "game-assets/images/characterflipped.png";
+            }else{
+                playerImage.src = "game-assets/images/character.png";
+            }
             break;
     }
 }
@@ -606,6 +619,27 @@ function drawGame() {
     ctx.drawImage(finishLine, 0, 0, 100, 1000, finishX, 0, 50, 1000);
 
     //Draw player
+
+    if (keys.left || keys.right) playerWalkTime++;
+    console.log("walk: " + playerWalkTime);
+
+    if (playerWalkTime === 16){
+
+        if (playerImage.src.endsWith("characterflipped.png")) {
+            playerImage.src = "game-assets/images/characterwalkflipped.png";
+
+        } else if (playerImage.src.endsWith("characterwalkflipped.png")) {
+            playerImage.src = "game-assets/images/characterflipped.png";
+
+        } else if (playerImage.src.endsWith("character.png")) {
+            playerImage.src = "game-assets/images/characterwalk.png";
+
+        } else if (playerImage.src.endsWith("characterwalk.png")) {
+            playerImage.src = "game-assets/images/character.png";
+        }
+        playerWalkTime = 0;
+    }
+
     ctx.drawImage(playerImage, 0, 0, 128, 256, player.x, player.y, 27, 54);
 
 }
