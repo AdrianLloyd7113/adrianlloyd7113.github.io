@@ -126,6 +126,17 @@ const keys = {
     up: false,
 };
 
+//MISC UI
+
+function changeBG(mode) {
+    if (mode === "ui") {
+        document.body.style.background = "#919191";
+        document.body.style.background = "linear-gradient(90deg, rgba(0, 169, 255, 0.6) 0%, rgb(147, 195, 203) 50%, rgba(0, 34, 107, 1) 100%)";
+    } else if (mode === "game") {
+        document.body.style.background = "#222";
+    }
+}
+
 //PLAYER CONTROL
 
 const keyDownHandler = function(e) {
@@ -302,6 +313,8 @@ function winScreen(){
 function start(){
     lastTime = performance.now();
     retrieveUserStats();
+
+    changeBG("game");
 
     mainScreenElement.style.display = 'none';
     deathScreenElement.style.display = 'none';
@@ -544,6 +557,8 @@ function checkFinish() {
 function die(){
     document.removeEventListener('keydown', keyDownHandler);
     document.removeEventListener('keyup', keyUpHandler);
+
+    changeBG("ui");
 
     keys.left = false;
     keys.up = false;

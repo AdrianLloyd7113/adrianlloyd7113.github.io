@@ -4,9 +4,11 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #222;
+    /*background-color: #222;*/
     color: #fff;
     font-family: Arial, sans-serif;
+    background: #919191;
+    background: linear-gradient(90deg, rgba(0, 169, 255, 0.6) 0%, rgb(147, 195, 203) 50%, rgba(0, 34, 107, 1) 100%);
 }
 
 .main-screen {
@@ -20,11 +22,13 @@ body {
     margin: 10px auto;
     padding: 15px 30px;
     font-size: 18px;
-    background-color: #444;
+    /*background-color: #444;*/
     border: none;
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s;
+    border-radius: 10px;
+    background-color: #002e6c;
 }
 
 .block-button:hover {
