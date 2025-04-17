@@ -202,15 +202,18 @@ ul{
   vertical-align: middle;
 }
 
-#da-box > img{
 
-}
 
 @media (max-width: 1081px) {
   .current-role {
     flex-direction: column;
     align-items: center;
     align-content: center;
+  }
+
+  .bio-img > img{
+    display: none;
+    visibility: hidden;
   }
 
   #da-box{
@@ -418,6 +421,7 @@ ul{
     transition: all 0.3s ease-in-out;
     text-decoration: none;
     color: #fff;
+    max-width: 80%;
     font-size: 14px;
     font-weight: bold;
     text-align: center;
