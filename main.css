@@ -39,7 +39,7 @@ body{
 
   font-family: Arial, sans-serif;
   background-color: #000;
-  background-image: linear-gradient(black, rgb(0, 30, 77));
+  background-image: linear-gradient(rgb(131, 206, 255), rgb(0, 73, 185));
   margin: 0;
   padding: 0;
   @media (max-width: 1081px) {
@@ -56,14 +56,32 @@ body{
   }
 }
 
+@keyframes fadeInDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
 header {
   font-family: "Poppins", sans-serif;
-  background-color: #333;
+  background-color: #444444;
   color: #fff;
   text-align: center;
-
   padding: 1rem;
   margin-bottom: 1vw;
+  animation: fadeInDrop 1.2s ease-out;
+}
+
+header h1 a {
+  background: linear-gradient(90deg, #6aa9ff, #b4d2ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 ul{
@@ -83,6 +101,7 @@ ul{
   display: flex;
   align-items: center;
   gap: 0px;
+  animation: fadeInDrop 1.2s ease-out;
 }
 
 
@@ -159,6 +178,11 @@ ul{
   @media (max-width: 1081px) {
     text-align: center;
   }
+}
+
+body.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
 }
 
 /* homepage ends */
@@ -322,7 +346,7 @@ ul{
   #navbar {
     z-index: 9999;
     overflow: hidden;
-    background-color: #333;
+    background-color: rgba(126, 126, 126, 0.7);
     text-align: center;
   }
 
@@ -331,12 +355,13 @@ ul{
     color: #f2f2f2;
     padding: 14px;
     text-decoration: none;
+    border-radius: 15px;
   }
 
   #navbar a:hover {
-    color: rgba(118, 170, 255, 0.77);
+    color: rgb(73, 191, 255);
     transition: all 0.3s ease-in-out;
-    background-color: #000;
+    background-color: rgba(255, 255, 255, 0.2);
   }
 
 
@@ -356,9 +381,10 @@ ul{
     display: inline-block;
     width: 200px;
     height: 40px;
-    background-color: #000;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.7);
+    /*border: 1px solid rgba(0, 0, 0, 0.1);*/
+    /*border-radius: 10px;*/
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
     transition: all 0.3s ease-in-out;
     text-decoration: none;
     color: #fff;
@@ -368,6 +394,13 @@ ul{
     line-height: 40px;
     margin-top: 0.2vw;
     margin-bottom: 0.2vw;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+
     @media (max-width: 1081px) {
       text-align: center;
     }
@@ -415,9 +448,9 @@ ul{
     display: inline-block;
     width: 400px;
     height: 40px;
-    background-color: #000;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.8);
+    /*border: 1px solid rgba(0, 0, 0, 0.1);*/
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
     transition: all 0.3s ease-in-out;
     text-decoration: none;
     color: #fff;
@@ -426,6 +459,13 @@ ul{
     font-weight: bold;
     text-align: center;
     line-height: 40px;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+
   }
 
   .wide-button:hover {
@@ -486,7 +526,7 @@ ul{
     text-align: center;
 
     margin: auto;
-    margin-bottom: 1vw;
+    margin-bottom: 20vw;
     margin-top: 1vw;
     padding: 2rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -542,6 +582,31 @@ ul{
   h2, h3{
       text-align: center;
   }
+}
+
+.frosty{
+  animation: fadeInDrop 1.2s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+
+}
+
+.frosty.xtra{
+  background-color: rgba(49, 49, 49, 0.5);
+  color: white;
+}
+
+.frosty.glass-header{
+  margin-top: 0.5vw;
+  background-color: rgba(49, 49, 49, 0.8);
+  color: white;
+}
+
+.frosty.body-container{
+  background-color: rgba(255,255,255,0.5);
 }
 
 /* blog page ends */

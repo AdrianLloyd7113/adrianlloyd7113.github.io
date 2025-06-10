@@ -1,0 +1,62 @@
+/* self-service header / logo */
+.institutionalBranding {
+  background-image: url("https://dalonline.dal.ca/wtlgifs/dalhousie-2022-logo-black-PROD.png") !important;
+  width: 285px !important;
+  margin-left: 0;
+  padding-right: 0;
+}
+
+#header-main-section, #banner-header-main-section  {
+    -webkit-box-shadow: 0 5px 5px -5px rgb(0 0 0 / 20%);
+    -moz-box-shadow: 0 5px 5px -5px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 5px -5pxrgba(0,0,0,0.2);
+    background-color: #FCFCFC; /*#5353D1*/
+    border-bottom: solid 2px #FFD400; /*#51ABFF*/
+	min-height: 87px !important;
+	min-width: 385px;
+}
+
+#header-main-section-east-part {
+	background-color: #FCFCFC !important;
+}
+
+#header-main-section-east-part #username, #signList .canvas-item {
+	color: #242424;
+}
+
+/* custom toolbar images to replace basline (white) */
+
+#bannerMenu {
+  background: url("https://dalonline.dal.ca/wtlgifs/dal-menu-black.png") center center no-repeat;
+}
+
+#tools {
+  background: url("https://dalonline.dal.ca/wtlgifs/dal-settings-black.png") center center no-repeat;
+}
+
+#user {
+  background: url("https://dalonline.dal.ca/wtlgifs/dal-avatar-black.png") center center no-repeat;
+}
+
+@media only screen and (min-width: 0px) and (max-width: 767px) {
+  .signIn-mobile {
+    background: url("https://dalonline.dal.ca/wtlgifs/dal-lock-black.png") center center no-repeat;
+  }
+}
+
+/* favicon */
+.favicon {
+  background-image: url("https://dalonline.dal.ca/favicon.ico");
+  width: 20em;
+}
+
+/* admin pages header / logo */
+.workspace-header {
+    background-color: #FCFCFC;
+    border-bottom: 4px solid #FFD400;
+}
+.workspace-header .branding .workspace-branding {
+    background: url("https://dalonline.dal.ca/wtlgifs/dalhousie-2022-logo-black-PROD.png") no-repeat scroll -150px center transparent;
+    background-size: auto;
+}
+
