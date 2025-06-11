@@ -46,8 +46,13 @@
             </div>
         </div>
 
-<!--Entertainment projects-->
-        <div class="entertainment">
+        <div class="view-toggle frosty button-panel">
+            <button class="square-button frosty xbutton" onclick="showSection('games')">Games</button>
+            <button class="square-button frosty xbutton" onclick="showSection('software')">Other Software</button>
+        </div>
+
+        <!--Entertainment projects-->
+        <div id="games" class="content-section">
 
             <!--Sky Guy-->
             <div class="body-container frosty">
@@ -145,8 +150,8 @@
 
         </div>
 
-<!--Other software projects-->
-        <div class="other-software">
+        <!--Other software projects-->
+        <div id="software" class="content-section">
             <!--FRC-->
             <div class="body-container frosty">
                 <div class="body-image">
@@ -171,7 +176,6 @@
 
         </div>
 
-
     </div>
 
     <div class="more-section">
@@ -192,19 +196,28 @@
         </a>
     </div>
 
-<!-- MURPHY CONTAINER: -->
-
-    <!-- <div class="body-text">
-      <h2>MURPHY: A Web Language Project</h2>
-      <p>An experimental programming language project, built in Java, which attempts to make the process of web development easier through OOP.</p>
-      <a href="https://github.com/AdrianLloyd7113/murphy" class="square-button">
-        <span>GitHub</span>
-      </a>
-    </div>
-    <div class="body-image">
-      <img src="images/murphy.jpg" alt="A picture of Murphy, the dog.">
-    </div> -->
-
     <script src="script.js"></script>
+
+    <script>
+        function showSection(id) {
+            document.getElementById('games').style.display = (id === 'games') ? 'block' : 'none';
+            document.getElementById('software').style.display = (id === 'software') ? 'block' : 'none';
+        }
+    </script>
 </body>
+
+<footer class="frosty glass-footer">
+    <div class="footer-content">
+        <p>Adrian Lloyd 2025</p>
+        <div class="footer-links">
+            <a href="https://www.linkedin.com/in/adrian-d-lloyd/" target="_blank" aria-label="LinkedIn">
+                <img src="images/linkedin-icon.svg" alt="LinkedIn" class="footer-icon">
+            </a>
+            <a href="https://github.com/AdrianLloyd7113" target="_blank" aria-label="GitHub">
+                <img src="images/github-icon.svg" alt="GitHub" class="footer-icon">
+            </a>
+        </div>
+    </div>
+</footer>
+
 </html>

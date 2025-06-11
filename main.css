@@ -206,7 +206,6 @@ body.fade-out {
   display: flex;
   justify-content: center;
   text-align: center;
-  justify-content: center;
   max-width: 75vw;
   margin: 0 auto;
   margin-top: 1vw;
@@ -218,6 +217,19 @@ body.fade-out {
 
 #role-text{
   max-width: 70%;
+}
+
+.view-toggle{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  max-width: 75vw;
+  margin: 0 auto;
+  margin-top: 1vw;
+  margin-bottom: 1vw;
+  padding: 2rem;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #da-box{
@@ -362,6 +374,7 @@ body.fade-out {
     color: rgb(73, 191, 255);
     transition: all 0.3s ease-in-out;
     background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   }
 
 
@@ -599,7 +612,25 @@ body.fade-out {
   color: white;
 }
 
+.frosty.button-panel{
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.frosty.xbutton:hover{
+  cursor: pointer;
+}
+
 .frosty.glass-header{
+  margin-top: 0.5vw;
+  background-color: rgba(49, 49, 49, 0.8);
+  color: white;
+}
+
+.frosty.glass-footer{
+  font-family: "Poppins", sans-serif;
+  background-color: #444444;
+  text-align: center;
+  animation: fadeInDrop 1.2s ease-out;
   margin-top: 0.5vw;
   background-color: rgba(49, 49, 49, 0.8);
   color: white;
