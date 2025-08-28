@@ -101,8 +101,8 @@ let lastTime = performance.now();
 let deltaTime = 1/1000;
 
 //Define audio constants
-// const jump = new Audio('game-assets/audio/jump.mp3');
-// const deathSound = new Audio('game-assets/audio/death.wav');
+// const jump = new Audio('skyguy-assets/audio/jump.mp3');
+// const deathSound = new Audio('skyguy-assets/audio/death.wav');
 
 let canPlayJump = true;
 
@@ -144,14 +144,14 @@ const keyDownHandler = function(e) {
         case 'ArrowLeft':
         case 'a':
             if (!playerImage.src.endsWith("characterflipped.png") && !playerImage.src.endsWith("characterwalkflipped.png"))
-                playerImage.src = "game-assets/images/characterflipped.png";
+                playerImage.src = "skyguy-assets/images/characterflipped.png";
             keys.left = true;
             checkCollision();
             break;
         case 'ArrowRight':
         case 'd':
             if (!playerImage.src.endsWith("character.png") && !playerImage.src.endsWith("character.png"))
-                playerImage.src = "game-assets/images/character.png";
+                playerImage.src = "skyguy-assets/images/character.png";
             keys.right = true;
             checkCollision();
             break;
@@ -160,9 +160,9 @@ const keyDownHandler = function(e) {
         case 'Space':
             keys.up = !player.falling && !player.jumping;
             if (keys.left){
-                playerImage.src = "game-assets/images/characterjumpflipped.png";
+                playerImage.src = "skyguy-assets/images/characterjumpflipped.png";
             }else{
-                playerImage.src = "game-assets/images/characterjump.png";
+                playerImage.src = "skyguy-assets/images/characterjump.png";
             }
             checkCollision();
             break;
@@ -190,9 +190,9 @@ const keyUpHandler = function(e) {
             keys.up = false;
             checkCollision();
             if (keys.left){
-                playerImage.src = "game-assets/images/characterflipped.png";
+                playerImage.src = "skyguy-assets/images/characterflipped.png";
             }else{
-                playerImage.src = "game-assets/images/character.png";
+                playerImage.src = "skyguy-assets/images/character.png";
             }
             break;
     }
@@ -221,12 +221,12 @@ const badGuy = new Image(50, 50);
 const finishLine = new Image(100, 1000);
 
 //Set image sources
-background.src = "game-assets/images/background3.png";
-playerImage.src = "game-assets/images/character.png";
-platform.src = "game-assets/images/platform1.png";
-fireball.src = "game-assets/images/fireball.png";
-badGuy.src = "game-assets/images/badguy.png";
-finishLine.src = "game-assets/images/finish.png";
+background.src = "skyguy-assets/images/background3.png";
+playerImage.src = "skyguy-assets/images/character.png";
+platform.src = "skyguy-assets/images/platform1.png";
+fireball.src = "skyguy-assets/images/fireball.png";
+badGuy.src = "skyguy-assets/images/badguy.png";
+finishLine.src = "skyguy-assets/images/finish.png";
 
 //Define game entities
 let platforms = [];
@@ -641,16 +641,16 @@ function drawGame() {
     if (playerWalkTime === 16){
 
         if (playerImage.src.endsWith("characterflipped.png")) {
-            playerImage.src = "game-assets/images/characterwalkflipped.png";
+            playerImage.src = "skyguy-assets/images/characterwalkflipped.png";
 
         } else if (playerImage.src.endsWith("characterwalkflipped.png")) {
-            playerImage.src = "game-assets/images/characterflipped.png";
+            playerImage.src = "skyguy-assets/images/characterflipped.png";
 
         } else if (playerImage.src.endsWith("character.png")) {
-            playerImage.src = "game-assets/images/characterwalk.png";
+            playerImage.src = "skyguy-assets/images/characterwalk.png";
 
         } else if (playerImage.src.endsWith("characterwalk.png")) {
-            playerImage.src = "game-assets/images/character.png";
+            playerImage.src = "skyguy-assets/images/character.png";
         }
         playerWalkTime = 0;
     }
@@ -724,7 +724,7 @@ function currentDayNumber(){
 }
 
 function retrieveLevel(){
-    levelSrc = "game-assets/levels/level" + currentDayNumber() + ".level";
+    levelSrc = "skyguy-assets/levels/level" + currentDayNumber() + ".level";
 
     fetch(levelSrc)
         .then(response => response.text())
@@ -775,8 +775,8 @@ function loadLevel(levelData){
             } else if (entData[0] === "finish"){
                 finishX = parseInt(entData[1]);
             } else if (entData[0] === "theme"){
-                background.src =  "game-assets/images/background" + entData[1] + ".png";
-                platform.src = "game-assets/images/platform" + entData[1] + ".png";
+                background.src =  "skyguy-assets/images/background" + entData[1] + ".png";
+                platform.src = "skyguy-assets/images/platform" + entData[1] + ".png";
             }
         }
     } else {

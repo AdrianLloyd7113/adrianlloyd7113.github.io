@@ -1,4 +1,4 @@
-const audio = new Audio('game-assets/audio/CyborgNinja.mp3');
+const audio = new Audio('skyguy-assets/audio/CyborgNinja.mp3');
 
 audio.loop = true;
 audio.autoplay = true;
