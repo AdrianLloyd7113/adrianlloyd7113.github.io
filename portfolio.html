@@ -196,15 +196,51 @@
 
     </div>
 
-    <!--Awards Section-->
-<!--    <div class="awards-section frosty xtra">-->
-<!--        <h2>Awards & Recognition</h2>-->
-<!--        <ul>-->
-<!--            <li><b>Phi Delta Theta &#45;&#45; NSA Chapter Phi of the Year</b> <br> Honored three times for outstanding leadership, organizational development, and community impact.</li>-->
-<!--            <li><br> <b>Most Ambitious Game Award</b> – Global Game Jam 2024, Dalhousie Jam Site, for <em>Get Out VR</em>.</li>-->
-<!--        </ul>-->
-<!--    </div>-->
+    <div class="awards-section frosty xtra">
+        <h2>Awards & Recognition</h2>
 
+        <div class="awards-category">
+            <h3><em>Software</em></h3>
+            <div class="awards-grid">
+                <div class="award-panel frosty">
+                    <h4>2024 Most Ambitious Game Award &mdash; <em>Get Out VR</em></h4>
+                    <p style="font-size: 12px">Dalhousie Jam Site, Global Game Jam 2024</p>
+                </div>
+                <div class="award-panel frosty">
+                    <h4>2020 Dean's List Nominee</h4>
+                    <p style="font-size: 12px"><em>First Robotics Competition Team 4976, Revolt Robotics</em></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="awards-category">
+            <h3><em>Leadership and Management</em></h3>
+            <div class="awards-grid">
+                <div class="award-panel frosty">
+                    <h4>2025 Palladium Award for Outstanding Service</h4>
+                    <p style="font-size: 12px"><em>Phi Delta Theta Nova Scotia Alpha Chapter Advisory Board</em></p>
+                </div>
+                <div class="award-panel frosty">
+                    <h4>Phi of the Year Award (2022, 2023, 2025)</h4>
+                    <p style="font-size: 12px"><em>Phi Delta Theta Nova Scotia Alpha Chapter</em></p>
+                </div>
+                <div class="award-panel frosty">
+                    <h4>2022 Outstanding Freshman Award</h4>
+                    <p style="font-size: 12px"><em>Phi Delta Theta General Headquarters</em></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="awards-category">
+            <h3><em>Other</em></h3>
+            <div class="awards-grid">
+                <div class="award-panel frosty">
+                    <h4>Nominee, 2016 Best Performance in An Animated Program or Series &mdash; <em>Chirp</em></h4>
+                    <p style="font-size: 12px"><em>Canadian Screen Awards, Canadian Academy of Cinema and Television</em></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="more-section">
         <h3>My Resumé</h3>
@@ -236,21 +272,13 @@
             document.getElementById('games').style.display = (id === 'games') ? 'block' : 'none';
             document.getElementById('software').style.display = (id === 'software') ? 'block' : 'none';
         }
-    </script>
-</body>
 
-<!--<footer class="frosty glass-footer">-->
-<!--    <div class="footer-content">-->
-<!--        <p>Adrian Lloyd 2025</p>-->
-<!--        <div class="footer-links">-->
-<!--            <a href="https://www.linkedin.com/in/adrian-d-lloyd/" target="_blank" aria-label="LinkedIn">-->
-<!--                <img src="images/linkedin-icon.svg" alt="LinkedIn" class="footer-icon">-->
-<!--            </a>-->
-<!--            <a href="https://github.com/AdrianLloyd7113" target="_blank" aria-label="GitHub">-->
-<!--                <img src="images/github-icon.svg" alt="GitHub" class="footer-icon">-->
-<!--            </a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</footer>-->
+        window.onload = function() {
+            document.getElementById('games').style.display = 'block';
+            document.getElementById('software').style.display = 'none';
+        }
+    </script>
+
+</body>
 
 </html>
